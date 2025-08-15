@@ -3,7 +3,6 @@ import {
 	HeadContent,
 	Link,
 	Scripts,
-	createRootRoute,
 	createRootRouteWithContext,
 	type ActiveOptions,
 } from '@tanstack/react-router'
@@ -12,10 +11,8 @@ import * as React from 'react'
 import { DefaultCatchBoundary } from '~/components/DefaultCatchBoundary'
 import { NotFound } from '~/components/NotFound'
 import appCss from '~/styles/app.css?url'
-import { seo } from '~/utils/seo'
-import type { FileRoutesByTo, FileRouteTypes } from '../routeTree.gen'
+import type { FileRoutesByTo } from '../routeTree.gen'
 import type { AuthContext } from '../utils/auth'
-import { useIsMounted } from '../utils/useIsMounted'
 
 export interface RouterContext {
 	authentication: AuthContext
@@ -31,10 +28,6 @@ export const Route = createRootRouteWithContext<RouterContext>()({
 				name: 'viewport',
 				content: 'width=device-width, initial-scale=1',
 			},
-			...seo({
-				title: 'TanStack Start | Type-Safe, Client-First, Full-Stack React Framework',
-				description: `TanStack Start is a type-safe, client-first, full-stack React framework. `,
-			}),
 		],
 		links: [
 			{ rel: 'stylesheet', href: appCss },
@@ -57,12 +50,6 @@ export const Route = createRootRouteWithContext<RouterContext>()({
 			},
 			{ rel: 'manifest', href: '/site.webmanifest', color: '#fffff' },
 			{ rel: 'icon', href: '/favicon.ico' },
-		],
-		scripts: [
-			// {
-			// 	src: '/customScript.js',
-			// 	type: 'text/javascript',
-			// },
 		],
 	}),
 	errorComponent: DefaultCatchBoundary,
@@ -89,34 +76,12 @@ const mainNav: Array<NavInfo> = [
 		label: 'Pokemon',
 	},
 	{
-		href: '/posts',
-		label: 'Posts',
-	},
-	{
-		href: '/users',
-		label: 'Users',
-	},
-	{
-		href: '/route-a',
-		label: 'Route A',
-	},
-	{
-		href: '/deferred',
-		label: 'Deferred',
-	},
-	{
-		// @ts-expect-error
-		href: '/this-route-does-not-exist',
-		label: '404 page',
-	},
-	{
 		href: '/login',
 		label: 'Log in',
 	},
 ]
 
 function RootDocument({ children }: { children: React.ReactNode }) {
-	const isMounted = useIsMounted()
 	return (
 		<html>
 			<head>
@@ -144,40 +109,11 @@ function RootDocument({ children }: { children: React.ReactNode }) {
 							</Link>
 						</li>
 					))}
-
-					<li>
-						<Link
-							to="/search"
-							activeProps={{ className: 'font-bold' }}
-							activeOptions={{
-								includeSearch: false,
-							}}
-							search={{
-								query: 'Hello',
-								hasDiscount: false,
-								categories: ['electronics', 'clothing'],
-							}}
-						>
-							{({ isActive, isTransitioning }) => (
-								<>
-									{isActive && '❄️ '}
-									{isTransitioning && '⌛ '}
-									Search
-									{isActive && ' ❄️'}
-								</>
-							)}
-						</Link>
-					</li>
 				</ul>
 
 				<hr />
 				{children}
-
-				{isMounted && (
-					<>
-						<TanStackRouterDevtools position="bottom-right" />
-					</>
-				)}
+				<TanStackRouterDevtools position="bottom-right" />
 				<Scripts />
 			</body>
 		</html>

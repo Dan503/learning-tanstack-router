@@ -10,11 +10,12 @@ function RouteComponent() {
 	const router = useRouter()
 	return (
 		<>
-			<h2>Login</h2>
+			<h2 className="text-2xl mb-2">Login page</h2>
 			{isLoggedIn ? (
 				<>
-					<p>Hello User!</p>
+					<p className="mb-4 text-yellow-200">Hello User!</p>
 					<button
+						className="border-2 p-2 border-white rounded-md"
 						onClick={() => {
 							logout()
 							router.invalidate()
@@ -25,8 +26,9 @@ function RouteComponent() {
 				</>
 			) : (
 				<>
-					<p>Who are you?</p>
+					<p className="mb-4 text-blue-200">Who are you?</p>
 					<button
+						className="border-2 p-2 border-white rounded-md"
 						onClick={() => {
 							console.log('log in clicked')
 							login()

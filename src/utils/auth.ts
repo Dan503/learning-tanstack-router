@@ -1,4 +1,4 @@
-import { redirect, type RegisteredRouter } from '@tanstack/react-router'
+import { redirect } from '@tanstack/react-router'
 import { useCallback, useEffect, useState } from 'react'
 
 function isAuthenticated() {

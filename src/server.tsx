@@ -9,17 +9,14 @@ import { redirect } from '@tanstack/react-router'
 export default createStartHandler({
 	createRouter: () => {
 		return createRouter({
+			// create dummy server context that will be replaced when the JS loads
 			authentication: {
 				isLoggedIn: false,
 				login: () => {},
 				logout: () => {},
 				secureTheRoute() {
 					// Server assumes logged-out for this demo
-					throw redirect({
-						to: '/login',
-						// optional: bounce back after auth
-						// search: { redirect: request.url }  // if you pass request here
-					})
+					throw redirect({ to: '/login' })
 				},
 			},
 		})

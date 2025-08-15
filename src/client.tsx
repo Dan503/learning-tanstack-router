@@ -9,17 +9,17 @@ console.log('entry file loaded')
 
 function App() {
 	console.log('client.tsx ran!!!')
-	// ✅ Use a hook in a component for auth
+	// Use an auth hook in the outer most root component in client.tsx
 	const authentication = useAuth()
-	// create once
+	// create the router context provider feeding it the useAuth result
 	const routerContextRef = useRef(createRouter({ authentication }))
 
-	// keep router context in sync when auth changes (tokens/refresh/etc.)
+	// keep router context in sync when auth changes
 	useEffect(() => {
 		routerContextRef.current.update({ context: { authentication } })
-		// routerContextRef.current.invalidate()
 	}, [authentication.isLoggedIn])
 
+	// Feed the context into the StartClient component to give all pages access to it
 	return <StartClient router={routerContextRef.current} />
 }
 
