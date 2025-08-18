@@ -8,6 +8,7 @@
 // You should NOT make any changes in this file as it will be overwritten.
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
+import { createFileRoute } from '@tanstack/react-router'
 import { createServerRootRoute } from '@tanstack/react-start/server'
 
 import { Route as rootRouteImport } from './routes/__root'
@@ -17,23 +18,31 @@ import { Route as RedirectRouteImport } from './routes/redirect'
 import { Route as PostsRouteImport } from './routes/posts'
 import { Route as PokemonRouteImport } from './routes/pokemon'
 import { Route as DeferredRouteImport } from './routes/deferred'
-import { Route as PathlessLayoutRouteImport } from './routes/_pathlessLayout'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as UsersIndexRouteImport } from './routes/users.index'
 import { Route as PostsIndexRouteImport } from './routes/posts.index'
 import { Route as UsersUserIdRouteImport } from './routes/users.$userId'
 import { Route as PostsPostIdRouteImport } from './routes/posts.$postId'
 import { Route as PokemonIdRouteImport } from './routes/pokemon_.$id'
-import { Route as PathlessLayoutNestedLayoutRouteImport } from './routes/_pathlessLayout/_nested-layout'
+import { Route as hiddenGroupingOnlyFolderPathlessLayoutRouteImport } from './routes/(hidden-grouping-only-folder)/_pathlessLayout'
 import { Route as PostsPostIdDeepRouteImport } from './routes/posts_.$postId.deep'
-import { Route as PathlessLayoutNestedLayoutRouteBRouteImport } from './routes/_pathlessLayout/_nested-layout/route-b'
-import { Route as PathlessLayoutNestedLayoutRouteARouteImport } from './routes/_pathlessLayout/_nested-layout/route-a'
+import { Route as hiddenGroupingOnlyFolderPathlessLayoutNestedLayoutRouteImport } from './routes/(hidden-grouping-only-folder)/_pathlessLayout/_nested-layout'
+import { Route as hiddenGroupingOnlyFolderPathlessLayoutNestedLayoutRouteBRouteImport } from './routes/(hidden-grouping-only-folder)/_pathlessLayout/_nested-layout/route-b'
+import { Route as hiddenGroupingOnlyFolderPathlessLayoutNestedLayoutRouteARouteImport } from './routes/(hidden-grouping-only-folder)/_pathlessLayout/_nested-layout/route-a'
 import { ServerRoute as CustomScriptDotjsServerRouteImport } from './routes/customScript[.]js'
 import { ServerRoute as ApiUsersServerRouteImport } from './routes/api/users'
 import { ServerRoute as ApiUsersUserIdServerRouteImport } from './routes/api/users.$userId'
 
+const hiddenGroupingOnlyFolderRouteImport = createFileRoute(
+  '/(hidden-grouping-only-folder)',
+)()
 const rootServerRouteImport = createServerRootRoute()
 
+const hiddenGroupingOnlyFolderRoute =
+  hiddenGroupingOnlyFolderRouteImport.update({
+    id: '/(hidden-grouping-only-folder)',
+    getParentRoute: () => rootRouteImport,
+  } as any)
 const UsersRoute = UsersRouteImport.update({
   id: '/users',
   path: '/users',
@@ -62,10 +71,6 @@ const PokemonRoute = PokemonRouteImport.update({
 const DeferredRoute = DeferredRouteImport.update({
   id: '/deferred',
   path: '/deferred',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const PathlessLayoutRoute = PathlessLayoutRouteImport.update({
-  id: '/_pathlessLayout',
   getParentRoute: () => rootRouteImport,
 } as any)
 const IndexRoute = IndexRouteImport.update({
@@ -98,27 +103,34 @@ const PokemonIdRoute = PokemonIdRouteImport.update({
   path: '/pokemon/$id',
   getParentRoute: () => rootRouteImport,
 } as any)
-const PathlessLayoutNestedLayoutRoute =
-  PathlessLayoutNestedLayoutRouteImport.update({
-    id: '/_nested-layout',
-    getParentRoute: () => PathlessLayoutRoute,
+const hiddenGroupingOnlyFolderPathlessLayoutRoute =
+  hiddenGroupingOnlyFolderPathlessLayoutRouteImport.update({
+    id: '/_pathlessLayout',
+    getParentRoute: () => hiddenGroupingOnlyFolderRoute,
   } as any)
 const PostsPostIdDeepRoute = PostsPostIdDeepRouteImport.update({
   id: '/posts_/$postId/deep',
   path: '/posts/$postId/deep',
   getParentRoute: () => rootRouteImport,
 } as any)
-const PathlessLayoutNestedLayoutRouteBRoute =
-  PathlessLayoutNestedLayoutRouteBRouteImport.update({
+const hiddenGroupingOnlyFolderPathlessLayoutNestedLayoutRoute =
+  hiddenGroupingOnlyFolderPathlessLayoutNestedLayoutRouteImport.update({
+    id: '/_nested-layout',
+    getParentRoute: () => hiddenGroupingOnlyFolderPathlessLayoutRoute,
+  } as any)
+const hiddenGroupingOnlyFolderPathlessLayoutNestedLayoutRouteBRoute =
+  hiddenGroupingOnlyFolderPathlessLayoutNestedLayoutRouteBRouteImport.update({
     id: '/route-b',
     path: '/route-b',
-    getParentRoute: () => PathlessLayoutNestedLayoutRoute,
+    getParentRoute: () =>
+      hiddenGroupingOnlyFolderPathlessLayoutNestedLayoutRoute,
   } as any)
-const PathlessLayoutNestedLayoutRouteARoute =
-  PathlessLayoutNestedLayoutRouteARouteImport.update({
+const hiddenGroupingOnlyFolderPathlessLayoutNestedLayoutRouteARoute =
+  hiddenGroupingOnlyFolderPathlessLayoutNestedLayoutRouteARouteImport.update({
     id: '/route-a',
     path: '/route-a',
-    getParentRoute: () => PathlessLayoutNestedLayoutRoute,
+    getParentRoute: () =>
+      hiddenGroupingOnlyFolderPathlessLayoutNestedLayoutRoute,
   } as any)
 const CustomScriptDotjsServerRoute = CustomScriptDotjsServerRouteImport.update({
   id: '/customScript.js',
@@ -137,7 +149,7 @@ const ApiUsersUserIdServerRoute = ApiUsersUserIdServerRouteImport.update({
 } as any)
 
 export interface FileRoutesByFullPath {
-  '/': typeof IndexRoute
+  '/': typeof hiddenGroupingOnlyFolderPathlessLayoutRouteWithChildren
   '/deferred': typeof DeferredRoute
   '/pokemon': typeof PokemonRoute
   '/posts': typeof PostsRouteWithChildren
@@ -149,12 +161,12 @@ export interface FileRoutesByFullPath {
   '/users/$userId': typeof UsersUserIdRoute
   '/posts/': typeof PostsIndexRoute
   '/users/': typeof UsersIndexRoute
-  '/route-a': typeof PathlessLayoutNestedLayoutRouteARoute
-  '/route-b': typeof PathlessLayoutNestedLayoutRouteBRoute
   '/posts/$postId/deep': typeof PostsPostIdDeepRoute
+  '/route-a': typeof hiddenGroupingOnlyFolderPathlessLayoutNestedLayoutRouteARoute
+  '/route-b': typeof hiddenGroupingOnlyFolderPathlessLayoutNestedLayoutRouteBRoute
 }
 export interface FileRoutesByTo {
-  '/': typeof IndexRoute
+  '/': typeof hiddenGroupingOnlyFolderPathlessLayoutRouteWithChildren
   '/deferred': typeof DeferredRoute
   '/pokemon': typeof PokemonRoute
   '/redirect': typeof RedirectRoute
@@ -164,29 +176,30 @@ export interface FileRoutesByTo {
   '/users/$userId': typeof UsersUserIdRoute
   '/posts': typeof PostsIndexRoute
   '/users': typeof UsersIndexRoute
-  '/route-a': typeof PathlessLayoutNestedLayoutRouteARoute
-  '/route-b': typeof PathlessLayoutNestedLayoutRouteBRoute
   '/posts/$postId/deep': typeof PostsPostIdDeepRoute
+  '/route-a': typeof hiddenGroupingOnlyFolderPathlessLayoutNestedLayoutRouteARoute
+  '/route-b': typeof hiddenGroupingOnlyFolderPathlessLayoutNestedLayoutRouteBRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
-  '/_pathlessLayout': typeof PathlessLayoutRouteWithChildren
   '/deferred': typeof DeferredRoute
   '/pokemon': typeof PokemonRoute
   '/posts': typeof PostsRouteWithChildren
   '/redirect': typeof RedirectRoute
   '/search': typeof SearchRoute
   '/users': typeof UsersRouteWithChildren
-  '/_pathlessLayout/_nested-layout': typeof PathlessLayoutNestedLayoutRouteWithChildren
+  '/(hidden-grouping-only-folder)': typeof hiddenGroupingOnlyFolderRouteWithChildren
+  '/(hidden-grouping-only-folder)/_pathlessLayout': typeof hiddenGroupingOnlyFolderPathlessLayoutRouteWithChildren
   '/pokemon_/$id': typeof PokemonIdRoute
   '/posts/$postId': typeof PostsPostIdRoute
   '/users/$userId': typeof UsersUserIdRoute
   '/posts/': typeof PostsIndexRoute
   '/users/': typeof UsersIndexRoute
-  '/_pathlessLayout/_nested-layout/route-a': typeof PathlessLayoutNestedLayoutRouteARoute
-  '/_pathlessLayout/_nested-layout/route-b': typeof PathlessLayoutNestedLayoutRouteBRoute
+  '/(hidden-grouping-only-folder)/_pathlessLayout/_nested-layout': typeof hiddenGroupingOnlyFolderPathlessLayoutNestedLayoutRouteWithChildren
   '/posts_/$postId/deep': typeof PostsPostIdDeepRoute
+  '/(hidden-grouping-only-folder)/_pathlessLayout/_nested-layout/route-a': typeof hiddenGroupingOnlyFolderPathlessLayoutNestedLayoutRouteARoute
+  '/(hidden-grouping-only-folder)/_pathlessLayout/_nested-layout/route-b': typeof hiddenGroupingOnlyFolderPathlessLayoutNestedLayoutRouteBRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -203,9 +216,9 @@ export interface FileRouteTypes {
     | '/users/$userId'
     | '/posts/'
     | '/users/'
+    | '/posts/$postId/deep'
     | '/route-a'
     | '/route-b'
-    | '/posts/$postId/deep'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -218,39 +231,40 @@ export interface FileRouteTypes {
     | '/users/$userId'
     | '/posts'
     | '/users'
+    | '/posts/$postId/deep'
     | '/route-a'
     | '/route-b'
-    | '/posts/$postId/deep'
   id:
     | '__root__'
     | '/'
-    | '/_pathlessLayout'
     | '/deferred'
     | '/pokemon'
     | '/posts'
     | '/redirect'
     | '/search'
     | '/users'
-    | '/_pathlessLayout/_nested-layout'
+    | '/(hidden-grouping-only-folder)'
+    | '/(hidden-grouping-only-folder)/_pathlessLayout'
     | '/pokemon_/$id'
     | '/posts/$postId'
     | '/users/$userId'
     | '/posts/'
     | '/users/'
-    | '/_pathlessLayout/_nested-layout/route-a'
-    | '/_pathlessLayout/_nested-layout/route-b'
+    | '/(hidden-grouping-only-folder)/_pathlessLayout/_nested-layout'
     | '/posts_/$postId/deep'
+    | '/(hidden-grouping-only-folder)/_pathlessLayout/_nested-layout/route-a'
+    | '/(hidden-grouping-only-folder)/_pathlessLayout/_nested-layout/route-b'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
-  PathlessLayoutRoute: typeof PathlessLayoutRouteWithChildren
   DeferredRoute: typeof DeferredRoute
   PokemonRoute: typeof PokemonRoute
   PostsRoute: typeof PostsRouteWithChildren
   RedirectRoute: typeof RedirectRoute
   SearchRoute: typeof SearchRoute
   UsersRoute: typeof UsersRouteWithChildren
+  hiddenGroupingOnlyFolderRoute: typeof hiddenGroupingOnlyFolderRouteWithChildren
   PokemonIdRoute: typeof PokemonIdRoute
   PostsPostIdDeepRoute: typeof PostsPostIdDeepRoute
 }
@@ -285,6 +299,13 @@ export interface RootServerRouteChildren {
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/(hidden-grouping-only-folder)': {
+      id: '/(hidden-grouping-only-folder)'
+      path: '/'
+      fullPath: '/'
+      preLoaderRoute: typeof hiddenGroupingOnlyFolderRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/users': {
       id: '/users'
       path: '/users'
@@ -325,13 +346,6 @@ declare module '@tanstack/react-router' {
       path: '/deferred'
       fullPath: '/deferred'
       preLoaderRoute: typeof DeferredRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/_pathlessLayout': {
-      id: '/_pathlessLayout'
-      path: ''
-      fullPath: ''
-      preLoaderRoute: typeof PathlessLayoutRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/': {
@@ -376,12 +390,12 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof PokemonIdRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/_pathlessLayout/_nested-layout': {
-      id: '/_pathlessLayout/_nested-layout'
-      path: ''
-      fullPath: ''
-      preLoaderRoute: typeof PathlessLayoutNestedLayoutRouteImport
-      parentRoute: typeof PathlessLayoutRoute
+    '/(hidden-grouping-only-folder)/_pathlessLayout': {
+      id: '/(hidden-grouping-only-folder)/_pathlessLayout'
+      path: '/'
+      fullPath: '/'
+      preLoaderRoute: typeof hiddenGroupingOnlyFolderPathlessLayoutRouteImport
+      parentRoute: typeof hiddenGroupingOnlyFolderRoute
     }
     '/posts_/$postId/deep': {
       id: '/posts_/$postId/deep'
@@ -390,19 +404,26 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof PostsPostIdDeepRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/_pathlessLayout/_nested-layout/route-b': {
-      id: '/_pathlessLayout/_nested-layout/route-b'
+    '/(hidden-grouping-only-folder)/_pathlessLayout/_nested-layout': {
+      id: '/(hidden-grouping-only-folder)/_pathlessLayout/_nested-layout'
+      path: ''
+      fullPath: ''
+      preLoaderRoute: typeof hiddenGroupingOnlyFolderPathlessLayoutNestedLayoutRouteImport
+      parentRoute: typeof hiddenGroupingOnlyFolderPathlessLayoutRoute
+    }
+    '/(hidden-grouping-only-folder)/_pathlessLayout/_nested-layout/route-b': {
+      id: '/(hidden-grouping-only-folder)/_pathlessLayout/_nested-layout/route-b'
       path: '/route-b'
       fullPath: '/route-b'
-      preLoaderRoute: typeof PathlessLayoutNestedLayoutRouteBRouteImport
-      parentRoute: typeof PathlessLayoutNestedLayoutRoute
+      preLoaderRoute: typeof hiddenGroupingOnlyFolderPathlessLayoutNestedLayoutRouteBRouteImport
+      parentRoute: typeof hiddenGroupingOnlyFolderPathlessLayoutNestedLayoutRoute
     }
-    '/_pathlessLayout/_nested-layout/route-a': {
-      id: '/_pathlessLayout/_nested-layout/route-a'
+    '/(hidden-grouping-only-folder)/_pathlessLayout/_nested-layout/route-a': {
+      id: '/(hidden-grouping-only-folder)/_pathlessLayout/_nested-layout/route-a'
       path: '/route-a'
       fullPath: '/route-a'
-      preLoaderRoute: typeof PathlessLayoutNestedLayoutRouteARouteImport
-      parentRoute: typeof PathlessLayoutNestedLayoutRoute
+      preLoaderRoute: typeof hiddenGroupingOnlyFolderPathlessLayoutNestedLayoutRouteARouteImport
+      parentRoute: typeof hiddenGroupingOnlyFolderPathlessLayoutNestedLayoutRoute
     }
   }
 }
@@ -432,36 +453,6 @@ declare module '@tanstack/react-start/server' {
   }
 }
 
-interface PathlessLayoutNestedLayoutRouteChildren {
-  PathlessLayoutNestedLayoutRouteARoute: typeof PathlessLayoutNestedLayoutRouteARoute
-  PathlessLayoutNestedLayoutRouteBRoute: typeof PathlessLayoutNestedLayoutRouteBRoute
-}
-
-const PathlessLayoutNestedLayoutRouteChildren: PathlessLayoutNestedLayoutRouteChildren =
-  {
-    PathlessLayoutNestedLayoutRouteARoute:
-      PathlessLayoutNestedLayoutRouteARoute,
-    PathlessLayoutNestedLayoutRouteBRoute:
-      PathlessLayoutNestedLayoutRouteBRoute,
-  }
-
-const PathlessLayoutNestedLayoutRouteWithChildren =
-  PathlessLayoutNestedLayoutRoute._addFileChildren(
-    PathlessLayoutNestedLayoutRouteChildren,
-  )
-
-interface PathlessLayoutRouteChildren {
-  PathlessLayoutNestedLayoutRoute: typeof PathlessLayoutNestedLayoutRouteWithChildren
-}
-
-const PathlessLayoutRouteChildren: PathlessLayoutRouteChildren = {
-  PathlessLayoutNestedLayoutRoute: PathlessLayoutNestedLayoutRouteWithChildren,
-}
-
-const PathlessLayoutRouteWithChildren = PathlessLayoutRoute._addFileChildren(
-  PathlessLayoutRouteChildren,
-)
-
 interface PostsRouteChildren {
   PostsPostIdRoute: typeof PostsPostIdRoute
   PostsIndexRoute: typeof PostsIndexRoute
@@ -486,6 +477,54 @@ const UsersRouteChildren: UsersRouteChildren = {
 
 const UsersRouteWithChildren = UsersRoute._addFileChildren(UsersRouteChildren)
 
+interface hiddenGroupingOnlyFolderPathlessLayoutNestedLayoutRouteChildren {
+  hiddenGroupingOnlyFolderPathlessLayoutNestedLayoutRouteARoute: typeof hiddenGroupingOnlyFolderPathlessLayoutNestedLayoutRouteARoute
+  hiddenGroupingOnlyFolderPathlessLayoutNestedLayoutRouteBRoute: typeof hiddenGroupingOnlyFolderPathlessLayoutNestedLayoutRouteBRoute
+}
+
+const hiddenGroupingOnlyFolderPathlessLayoutNestedLayoutRouteChildren: hiddenGroupingOnlyFolderPathlessLayoutNestedLayoutRouteChildren =
+  {
+    hiddenGroupingOnlyFolderPathlessLayoutNestedLayoutRouteARoute:
+      hiddenGroupingOnlyFolderPathlessLayoutNestedLayoutRouteARoute,
+    hiddenGroupingOnlyFolderPathlessLayoutNestedLayoutRouteBRoute:
+      hiddenGroupingOnlyFolderPathlessLayoutNestedLayoutRouteBRoute,
+  }
+
+const hiddenGroupingOnlyFolderPathlessLayoutNestedLayoutRouteWithChildren =
+  hiddenGroupingOnlyFolderPathlessLayoutNestedLayoutRoute._addFileChildren(
+    hiddenGroupingOnlyFolderPathlessLayoutNestedLayoutRouteChildren,
+  )
+
+interface hiddenGroupingOnlyFolderPathlessLayoutRouteChildren {
+  hiddenGroupingOnlyFolderPathlessLayoutNestedLayoutRoute: typeof hiddenGroupingOnlyFolderPathlessLayoutNestedLayoutRouteWithChildren
+}
+
+const hiddenGroupingOnlyFolderPathlessLayoutRouteChildren: hiddenGroupingOnlyFolderPathlessLayoutRouteChildren =
+  {
+    hiddenGroupingOnlyFolderPathlessLayoutNestedLayoutRoute:
+      hiddenGroupingOnlyFolderPathlessLayoutNestedLayoutRouteWithChildren,
+  }
+
+const hiddenGroupingOnlyFolderPathlessLayoutRouteWithChildren =
+  hiddenGroupingOnlyFolderPathlessLayoutRoute._addFileChildren(
+    hiddenGroupingOnlyFolderPathlessLayoutRouteChildren,
+  )
+
+interface hiddenGroupingOnlyFolderRouteChildren {
+  hiddenGroupingOnlyFolderPathlessLayoutRoute: typeof hiddenGroupingOnlyFolderPathlessLayoutRouteWithChildren
+}
+
+const hiddenGroupingOnlyFolderRouteChildren: hiddenGroupingOnlyFolderRouteChildren =
+  {
+    hiddenGroupingOnlyFolderPathlessLayoutRoute:
+      hiddenGroupingOnlyFolderPathlessLayoutRouteWithChildren,
+  }
+
+const hiddenGroupingOnlyFolderRouteWithChildren =
+  hiddenGroupingOnlyFolderRoute._addFileChildren(
+    hiddenGroupingOnlyFolderRouteChildren,
+  )
+
 interface ApiUsersServerRouteChildren {
   ApiUsersUserIdServerRoute: typeof ApiUsersUserIdServerRoute
 }
@@ -500,13 +539,13 @@ const ApiUsersServerRouteWithChildren = ApiUsersServerRoute._addFileChildren(
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
-  PathlessLayoutRoute: PathlessLayoutRouteWithChildren,
   DeferredRoute: DeferredRoute,
   PokemonRoute: PokemonRoute,
   PostsRoute: PostsRouteWithChildren,
   RedirectRoute: RedirectRoute,
   SearchRoute: SearchRoute,
   UsersRoute: UsersRouteWithChildren,
+  hiddenGroupingOnlyFolderRoute: hiddenGroupingOnlyFolderRouteWithChildren,
   PokemonIdRoute: PokemonIdRoute,
   PostsPostIdDeepRoute: PostsPostIdDeepRoute,
 }
