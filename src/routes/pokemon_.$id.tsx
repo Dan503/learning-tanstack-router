@@ -6,7 +6,7 @@ export const Route = createFileRoute('/pokemon_/$id')({
 	loader: async ({ params }) => await fetchPokemon(params.id),
 })
 
-async function RouteComponent() {
+function RouteComponent() {
 	const pokemon = Route.useLoaderData()
 	return (
 		<div className="p-4">

@@ -3,10 +3,6 @@ import { fetchPokemonList } from '../utils/pokemon'
 
 export const Route = createFileRoute('/pokemon')({
 	component: RouteComponent,
-	beforeLoad: ({ context }) => {
-		console.log('beforeLoad ran on /pokemon route')
-		return context.authentication.secureTheRoute()
-	},
 	loader: async ({}) => await fetchPokemonList(),
 })
 

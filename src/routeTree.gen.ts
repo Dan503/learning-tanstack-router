@@ -16,7 +16,6 @@ import { Route as SearchRouteImport } from './routes/search'
 import { Route as RedirectRouteImport } from './routes/redirect'
 import { Route as PostsRouteImport } from './routes/posts'
 import { Route as PokemonRouteImport } from './routes/pokemon'
-import { Route as LoginRouteImport } from './routes/login'
 import { Route as DeferredRouteImport } from './routes/deferred'
 import { Route as PathlessLayoutRouteImport } from './routes/_pathlessLayout'
 import { Route as IndexRouteImport } from './routes/index'
@@ -58,11 +57,6 @@ const PostsRoute = PostsRouteImport.update({
 const PokemonRoute = PokemonRouteImport.update({
   id: '/pokemon',
   path: '/pokemon',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const LoginRoute = LoginRouteImport.update({
-  id: '/login',
-  path: '/login',
   getParentRoute: () => rootRouteImport,
 } as any)
 const DeferredRoute = DeferredRouteImport.update({
@@ -145,7 +139,6 @@ const ApiUsersUserIdServerRoute = ApiUsersUserIdServerRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/deferred': typeof DeferredRoute
-  '/login': typeof LoginRoute
   '/pokemon': typeof PokemonRoute
   '/posts': typeof PostsRouteWithChildren
   '/redirect': typeof RedirectRoute
@@ -163,7 +156,6 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/deferred': typeof DeferredRoute
-  '/login': typeof LoginRoute
   '/pokemon': typeof PokemonRoute
   '/redirect': typeof RedirectRoute
   '/search': typeof SearchRoute
@@ -181,7 +173,6 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/_pathlessLayout': typeof PathlessLayoutRouteWithChildren
   '/deferred': typeof DeferredRoute
-  '/login': typeof LoginRoute
   '/pokemon': typeof PokemonRoute
   '/posts': typeof PostsRouteWithChildren
   '/redirect': typeof RedirectRoute
@@ -202,7 +193,6 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/deferred'
-    | '/login'
     | '/pokemon'
     | '/posts'
     | '/redirect'
@@ -220,7 +210,6 @@ export interface FileRouteTypes {
   to:
     | '/'
     | '/deferred'
-    | '/login'
     | '/pokemon'
     | '/redirect'
     | '/search'
@@ -237,7 +226,6 @@ export interface FileRouteTypes {
     | '/'
     | '/_pathlessLayout'
     | '/deferred'
-    | '/login'
     | '/pokemon'
     | '/posts'
     | '/redirect'
@@ -258,7 +246,6 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   PathlessLayoutRoute: typeof PathlessLayoutRouteWithChildren
   DeferredRoute: typeof DeferredRoute
-  LoginRoute: typeof LoginRoute
   PokemonRoute: typeof PokemonRoute
   PostsRoute: typeof PostsRouteWithChildren
   RedirectRoute: typeof RedirectRoute
@@ -331,13 +318,6 @@ declare module '@tanstack/react-router' {
       path: '/pokemon'
       fullPath: '/pokemon'
       preLoaderRoute: typeof PokemonRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/login': {
-      id: '/login'
-      path: '/login'
-      fullPath: '/login'
-      preLoaderRoute: typeof LoginRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/deferred': {
@@ -522,7 +502,6 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   PathlessLayoutRoute: PathlessLayoutRouteWithChildren,
   DeferredRoute: DeferredRoute,
-  LoginRoute: LoginRoute,
   PokemonRoute: PokemonRoute,
   PostsRoute: PostsRouteWithChildren,
   RedirectRoute: RedirectRoute,

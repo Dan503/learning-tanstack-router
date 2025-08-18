@@ -4,7 +4,6 @@ import {
 	Link,
 	Scripts,
 	createRootRoute,
-	createRootRouteWithContext,
 	type ActiveOptions,
 } from '@tanstack/react-router'
 import { TanStackRouterDevtools } from '@tanstack/react-router-devtools'
@@ -13,15 +12,10 @@ import { DefaultCatchBoundary } from '~/components/DefaultCatchBoundary'
 import { NotFound } from '~/components/NotFound'
 import appCss from '~/styles/app.css?url'
 import { seo } from '~/utils/seo'
-import type { FileRoutesByTo, FileRouteTypes } from '../routeTree.gen'
-import type { AuthContext } from '../utils/auth'
+import type { FileRoutesByTo } from '../routeTree.gen'
 import { useIsMounted } from '../utils/useIsMounted'
 
-export interface RouterContext {
-	authentication: AuthContext
-}
-
-export const Route = createRootRouteWithContext<RouterContext>()({
+export const Route = createRootRoute({
 	head: () => ({
 		meta: [
 			{
@@ -59,10 +53,10 @@ export const Route = createRootRouteWithContext<RouterContext>()({
 			{ rel: 'icon', href: '/favicon.ico' },
 		],
 		scripts: [
-			// {
-			// 	src: '/customScript.js',
-			// 	type: 'text/javascript',
-			// },
+			{
+				src: '/customScript.js',
+				type: 'text/javascript',
+			},
 		],
 	}),
 	errorComponent: DefaultCatchBoundary,
@@ -109,14 +103,9 @@ const mainNav: Array<NavInfo> = [
 		href: '/this-route-does-not-exist',
 		label: '404 page',
 	},
-	{
-		href: '/login',
-		label: 'Log in',
-	},
 ]
 
 function RootDocument({ children }: { children: React.ReactNode }) {
-	const isMounted = useIsMounted()
 	return (
 		<html>
 			<head>
@@ -173,11 +162,7 @@ function RootDocument({ children }: { children: React.ReactNode }) {
 				<hr />
 				{children}
 
-				{isMounted && (
-					<>
-						<TanStackRouterDevtools position="bottom-right" />
-					</>
-				)}
+				<TanStackRouterDevtools position="bottom-right" />
 				<Scripts />
 			</body>
 		</html>
