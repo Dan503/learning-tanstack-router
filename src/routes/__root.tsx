@@ -14,6 +14,7 @@ import appCss from '~/styles/app.css?url'
 import { seo } from '~/utils/seo'
 import type { FileRoutesByTo } from '../routeTree.gen'
 import { useIsMounted } from '../utils/useIsMounted'
+import { CustomLink } from '../components/CustomLink'
 
 export const Route = createRootRoute({
 	head: () => ({
@@ -115,47 +116,21 @@ function RootDocument({ children }: { children: React.ReactNode }) {
 				<ul className="p-2 flex gap-2 text-lg list-none">
 					{mainNav.map((item) => (
 						<li key={item.href}>
-							<Link
-								to={item.href}
-								activeProps={{
-									className: 'font-bold',
-								}}
-								activeOptions={item.activeOptions}
-							>
-								{({ isActive, isTransitioning }) => (
-									<>
-										{isActive && '❄️ '}
-										{isTransitioning && '⌛ '}
-										{item.label}
-										{isActive && ' ❄️'}
-									</>
-								)}
-							</Link>
+							<CustomLink to={item.href}>{item.label}</CustomLink>
 						</li>
 					))}
 
 					<li>
-						<Link
+						<CustomLink
 							to="/search"
-							activeProps={{ className: 'font-bold' }}
-							activeOptions={{
-								includeSearch: false,
-							}}
 							search={{
 								query: 'Hello',
 								hasDiscount: false,
 								categories: ['electronics', 'clothing'],
 							}}
 						>
-							{({ isActive, isTransitioning }) => (
-								<>
-									{isActive && '❄️ '}
-									{isTransitioning && '⌛ '}
-									Search
-									{isActive && ' ❄️'}
-								</>
-							)}
-						</Link>
+							Search
+						</CustomLink>
 					</li>
 				</ul>
 
