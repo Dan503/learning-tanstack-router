@@ -100,6 +100,10 @@ const mainNav: Array<NavInfo> = [
 		label: 'Deferred',
 	},
 	{
+		href: '/serverCounter',
+		label: 'Server counter',
+	},
+	{
 		// @ts-expect-error
 		href: '/this-route-does-not-exist',
 		label: '404 page',

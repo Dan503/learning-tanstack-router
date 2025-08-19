@@ -30,8 +30,11 @@ importers:
         specifier: ^2.6.0
         version: 2.6.0
       zod:
-        specifier: ^3.24.2
+        specifier: ^3.25.76
         version: 3.25.76
+      zod-form-data:
+        specifier: ^3.0.0
+        version: 3.0.0(zod@3.25.76)
     devDependencies:
       '@types/node':
         specifier: ^22.5.4
@@ -922,6 +925,9 @@ packages:
     resolution: {integrity: sha512-CvUo2ixeIQGtF6WvuB87XWqPQkoFAFqW+HUo/WzHwuHDvIwZCtjdWXoYCcr06iKGydiqTclC4jU/TNObC/xKZg==}
     cpu: [x64]
     os: [win32]
+
+  '@rvf/set-get@7.0.1':
+    resolution: {integrity: sha512-GkTSn9K1GrTYoTUqlUs36k6nJnzjQaFBTTEIqUYmzBcsGsoJM8xG7EAx2WLHWAA4QzFjcwWUSHQ3vM3Fbw50Tg==}
 
   '@sindresorhus/is@7.0.2':
     resolution: {integrity: sha512-d9xRovfKNz1SKieM0qJdO+PQonjnnIfSNWfHYnBSJ9hkjm0ZPw6HlxscDXYstp3z+7V2GOFHc+J0CYrYTjqCJw==}
@@ -3376,6 +3382,11 @@ packages:
     resolution: {integrity: sha512-zK7YHHz4ZXpW89AHXUPbQVGKI7uvkd3hzusTdotCg1UxyaVtg0zFJSTfW/Dq5f7OBBVnq6cZIaC8Ti4hb6dtCA==}
     engines: {node: '>= 14'}
 
+  zod-form-data@3.0.0:
+    resolution: {integrity: sha512-jTQbmXQU5wMfI+ERZH6EuATzeD9FEOviPasLL2hCUP+FcLagXLtboUM95PHsSOFseL8Nv91YKlwln3zo1sAS2g==}
+    peerDependencies:
+      zod: '>= 3.25.0'
+
   zod@3.25.76:
     resolution: {integrity: sha512-gzUt/qt81nXsFGKIFcC3YnfEAx5NkunCfnDlvuBSSFS02bcXu4Lmea0AFIUwbLWxWPx3d9p8S5QoaujKcNQxcQ==}
 
@@ -4137,6 +4148,8 @@ snapshots:
 
   '@rollup/rollup-win32-x64-msvc@4.46.2':
     optional: true
+
+  '@rvf/set-get@7.0.1': {}
 
   '@sindresorhus/is@7.0.2': {}
 
@@ -6916,5 +6929,10 @@ snapshots:
       archiver-utils: 5.0.2
       compress-commons: 6.0.2
       readable-stream: 4.7.0
+
+  zod-form-data@3.0.0(zod@3.25.76):
+    dependencies:
+      '@rvf/set-get': 7.0.1
+      zod: 3.25.76
 
   zod@3.25.76: {}
