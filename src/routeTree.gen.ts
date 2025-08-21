@@ -12,6 +12,7 @@ import { createFileRoute } from '@tanstack/react-router'
 import { createServerRootRoute } from '@tanstack/react-start/server'
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as ZustandTickTacToeRouteImport } from './routes/zustandTickTacToe'
 import { Route as UsersRouteImport } from './routes/users'
 import { Route as ServerCounterRouteImport } from './routes/serverCounter'
 import { Route as SearchRouteImport } from './routes/search'
@@ -44,6 +45,11 @@ const hiddenGroupingOnlyFolderRoute =
     id: '/(hidden-grouping-only-folder)',
     getParentRoute: () => rootRouteImport,
   } as any)
+const ZustandTickTacToeRoute = ZustandTickTacToeRouteImport.update({
+  id: '/zustandTickTacToe',
+  path: '/zustandTickTacToe',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const UsersRoute = UsersRouteImport.update({
   id: '/users',
   path: '/users',
@@ -163,6 +169,7 @@ export interface FileRoutesByFullPath {
   '/search': typeof SearchRoute
   '/serverCounter': typeof ServerCounterRoute
   '/users': typeof UsersRouteWithChildren
+  '/zustandTickTacToe': typeof ZustandTickTacToeRoute
   '/pokemon/$id': typeof PokemonIdRoute
   '/posts/$postId': typeof PostsPostIdRoute
   '/users/$userId': typeof UsersUserIdRoute
@@ -179,6 +186,7 @@ export interface FileRoutesByTo {
   '/redirect': typeof RedirectRoute
   '/search': typeof SearchRoute
   '/serverCounter': typeof ServerCounterRoute
+  '/zustandTickTacToe': typeof ZustandTickTacToeRoute
   '/pokemon/$id': typeof PokemonIdRoute
   '/posts/$postId': typeof PostsPostIdRoute
   '/users/$userId': typeof UsersUserIdRoute
@@ -198,6 +206,7 @@ export interface FileRoutesById {
   '/search': typeof SearchRoute
   '/serverCounter': typeof ServerCounterRoute
   '/users': typeof UsersRouteWithChildren
+  '/zustandTickTacToe': typeof ZustandTickTacToeRoute
   '/(hidden-grouping-only-folder)': typeof hiddenGroupingOnlyFolderRouteWithChildren
   '/(hidden-grouping-only-folder)/_pathlessLayout': typeof hiddenGroupingOnlyFolderPathlessLayoutRouteWithChildren
   '/pokemon_/$id': typeof PokemonIdRoute
@@ -221,6 +230,7 @@ export interface FileRouteTypes {
     | '/search'
     | '/serverCounter'
     | '/users'
+    | '/zustandTickTacToe'
     | '/pokemon/$id'
     | '/posts/$postId'
     | '/users/$userId'
@@ -237,6 +247,7 @@ export interface FileRouteTypes {
     | '/redirect'
     | '/search'
     | '/serverCounter'
+    | '/zustandTickTacToe'
     | '/pokemon/$id'
     | '/posts/$postId'
     | '/users/$userId'
@@ -255,6 +266,7 @@ export interface FileRouteTypes {
     | '/search'
     | '/serverCounter'
     | '/users'
+    | '/zustandTickTacToe'
     | '/(hidden-grouping-only-folder)'
     | '/(hidden-grouping-only-folder)/_pathlessLayout'
     | '/pokemon_/$id'
@@ -277,6 +289,7 @@ export interface RootRouteChildren {
   SearchRoute: typeof SearchRoute
   ServerCounterRoute: typeof ServerCounterRoute
   UsersRoute: typeof UsersRouteWithChildren
+  ZustandTickTacToeRoute: typeof ZustandTickTacToeRoute
   hiddenGroupingOnlyFolderRoute: typeof hiddenGroupingOnlyFolderRouteWithChildren
   PokemonIdRoute: typeof PokemonIdRoute
   PostsPostIdDeepRoute: typeof PostsPostIdDeepRoute
@@ -317,6 +330,13 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof hiddenGroupingOnlyFolderRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/zustandTickTacToe': {
+      id: '/zustandTickTacToe'
+      path: '/zustandTickTacToe'
+      fullPath: '/zustandTickTacToe'
+      preLoaderRoute: typeof ZustandTickTacToeRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/users': {
@@ -566,6 +586,7 @@ const rootRouteChildren: RootRouteChildren = {
   SearchRoute: SearchRoute,
   ServerCounterRoute: ServerCounterRoute,
   UsersRoute: UsersRouteWithChildren,
+  ZustandTickTacToeRoute: ZustandTickTacToeRoute,
   hiddenGroupingOnlyFolderRoute: hiddenGroupingOnlyFolderRouteWithChildren,
   PokemonIdRoute: PokemonIdRoute,
   PostsPostIdDeepRoute: PostsPostIdDeepRoute,

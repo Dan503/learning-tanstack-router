@@ -104,6 +104,10 @@ const mainNav: Array<NavInfo> = [
 		label: 'Server counter',
 	},
 	{
+		href: '/zustandTickTacToe',
+		label: 'Zustand Tick Tac Toe',
+	},
+	{
 		// @ts-expect-error
 		href: '/this-route-does-not-exist',
 		label: '404 page',
