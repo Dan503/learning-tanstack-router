@@ -1,4 +1,5 @@
 import { createFileRoute } from '@tanstack/react-router'
+import { memo } from 'react'
 import { create } from 'zustand'
 
 export const Route = createFileRoute('/zustandTickTacToe')({
@@ -50,18 +51,33 @@ interface GameStore {
 	squares: Squares
 	setSquares: SetStateFn<Squares>
 	xIsNext: boolean
-	setXIsNext: SetStateFn<boolean>
+	makeMove: (index: number) => void
 }
 
 const useGameStore = create<GameStore>()((set): GameStore => {
 	const setSquares = createSetterFn(set, 'squares')
-	const setXIsNext = createSetterFn(set, 'xIsNext')
+	// const setXIsNext = createSetterFn(set, 'xIsNext')
 
 	return {
 		squares: new Array(9).fill(null),
 		setSquares,
 		xIsNext: true,
-		setXIsNext,
+		makeMove: (index) => {
+			set((prevState) => {
+				if (
+					prevState.squares[index] ||
+					calculateWinner(prevState.squares)
+				)
+					return prevState
+				const nextSquares = prevState.squares.slice()
+				nextSquares[index] = prevState.xIsNext ? 'x' : 'o'
+				return {
+					...prevState,
+					squares: nextSquares,
+					xIsNext: !prevState.xIsNext,
+				}
+			})
+		},
 	}
 })
 
@@ -95,8 +111,8 @@ function Board() {
 					border: '1px solid #999',
 				}}
 			>
-				{squares.map((value, index) => {
-					return <Square key={index} value={value} index={index} />
+				{squares.map((_, index) => {
+					return <Square key={index} index={index} />
 				})}
 			</div>
 		</div>
@@ -105,31 +121,19 @@ function Board() {
 
 interface SquareProps {
 	index: number
-	value: Squares[0]
-	// onSquareClick: () => void
 }
 
-function Square({ index }: SquareProps) {
-	const squares = useGameStore((state) => state.squares)
-	const setSquares = useGameStore((state) => state.setSquares)
-	const xIsNext = useGameStore((state) => state.xIsNext)
-	const setXIsNext = useGameStore((state) => state.setXIsNext)
+const Square = memo(({ index }: SquareProps) => {
+	const thisSquare = useGameStore((state) => state.squares[index])
+	const makeMove = useGameStore((state) => state.makeMove)
 
-	const thisSquare = squares[index]
-
-	function onSquareClick() {
-		// don't do anything if there is already a value
-		if (squares[index]) return
-		// create a clone
-		const nextSquares = squares.slice()
-		nextSquares[index] = xIsNext ? 'x' : 'o'
-		setSquares(nextSquares)
-		setXIsNext((prev) => !prev)
-	}
+	console.log(`${index} rerendered`)
 
 	return (
 		<button
-			onClick={onSquareClick}
+			onClick={() => {
+				makeMove(index)
+			}}
 			style={{
 				display: 'inline-flex',
 				alignItems: 'center',
@@ -147,7 +151,7 @@ function Square({ index }: SquareProps) {
 			{thisSquare}
 		</button>
 	)
-}
+})
 
 function calculateWinner(squares: Squares) {
 	const lines = [
