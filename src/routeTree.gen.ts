@@ -23,6 +23,7 @@ import { Route as DeferredRouteImport } from './routes/deferred'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as UsersIndexRouteImport } from './routes/users.index'
 import { Route as PostsIndexRouteImport } from './routes/posts.index'
+import { Route as UsersRegisterRouteImport } from './routes/users.register'
 import { Route as UsersUserIdRouteImport } from './routes/users.$userId'
 import { Route as PostsPostIdRouteImport } from './routes/posts.$postId'
 import { Route as PokemonIdRouteImport } from './routes/pokemon_.$id'
@@ -100,6 +101,11 @@ const PostsIndexRoute = PostsIndexRouteImport.update({
   path: '/',
   getParentRoute: () => PostsRoute,
 } as any)
+const UsersRegisterRoute = UsersRegisterRouteImport.update({
+  id: '/register',
+  path: '/register',
+  getParentRoute: () => UsersRoute,
+} as any)
 const UsersUserIdRoute = UsersUserIdRouteImport.update({
   id: '/$userId',
   path: '/$userId',
@@ -173,6 +179,7 @@ export interface FileRoutesByFullPath {
   '/pokemon/$id': typeof PokemonIdRoute
   '/posts/$postId': typeof PostsPostIdRoute
   '/users/$userId': typeof UsersUserIdRoute
+  '/users/register': typeof UsersRegisterRoute
   '/posts/': typeof PostsIndexRoute
   '/users/': typeof UsersIndexRoute
   '/posts/$postId/deep': typeof PostsPostIdDeepRoute
@@ -190,6 +197,7 @@ export interface FileRoutesByTo {
   '/pokemon/$id': typeof PokemonIdRoute
   '/posts/$postId': typeof PostsPostIdRoute
   '/users/$userId': typeof UsersUserIdRoute
+  '/users/register': typeof UsersRegisterRoute
   '/posts': typeof PostsIndexRoute
   '/users': typeof UsersIndexRoute
   '/posts/$postId/deep': typeof PostsPostIdDeepRoute
@@ -212,6 +220,7 @@ export interface FileRoutesById {
   '/pokemon_/$id': typeof PokemonIdRoute
   '/posts/$postId': typeof PostsPostIdRoute
   '/users/$userId': typeof UsersUserIdRoute
+  '/users/register': typeof UsersRegisterRoute
   '/posts/': typeof PostsIndexRoute
   '/users/': typeof UsersIndexRoute
   '/(hidden-grouping-only-folder)/_pathlessLayout/_nested-layout': typeof hiddenGroupingOnlyFolderPathlessLayoutNestedLayoutRouteWithChildren
@@ -234,6 +243,7 @@ export interface FileRouteTypes {
     | '/pokemon/$id'
     | '/posts/$postId'
     | '/users/$userId'
+    | '/users/register'
     | '/posts/'
     | '/users/'
     | '/posts/$postId/deep'
@@ -251,6 +261,7 @@ export interface FileRouteTypes {
     | '/pokemon/$id'
     | '/posts/$postId'
     | '/users/$userId'
+    | '/users/register'
     | '/posts'
     | '/users'
     | '/posts/$postId/deep'
@@ -272,6 +283,7 @@ export interface FileRouteTypes {
     | '/pokemon_/$id'
     | '/posts/$postId'
     | '/users/$userId'
+    | '/users/register'
     | '/posts/'
     | '/users/'
     | '/(hidden-grouping-only-folder)/_pathlessLayout/_nested-layout'
@@ -409,6 +421,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof PostsIndexRouteImport
       parentRoute: typeof PostsRoute
     }
+    '/users/register': {
+      id: '/users/register'
+      path: '/register'
+      fullPath: '/users/register'
+      preLoaderRoute: typeof UsersRegisterRouteImport
+      parentRoute: typeof UsersRoute
+    }
     '/users/$userId': {
       id: '/users/$userId'
       path: '/$userId'
@@ -507,11 +526,13 @@ const PostsRouteWithChildren = PostsRoute._addFileChildren(PostsRouteChildren)
 
 interface UsersRouteChildren {
   UsersUserIdRoute: typeof UsersUserIdRoute
+  UsersRegisterRoute: typeof UsersRegisterRoute
   UsersIndexRoute: typeof UsersIndexRoute
 }
 
 const UsersRouteChildren: UsersRouteChildren = {
   UsersUserIdRoute: UsersUserIdRoute,
+  UsersRegisterRoute: UsersRegisterRoute,
   UsersIndexRoute: UsersIndexRoute,
 }
 
