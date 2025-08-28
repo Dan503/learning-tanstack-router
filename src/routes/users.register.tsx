@@ -1,43 +1,70 @@
 import { useForm } from '@tanstack/react-form'
 import { createFileRoute } from '@tanstack/react-router'
-import type { User } from '../utils/users'
 
-interface UserRegister extends User {
-	age: number | undefined
-	birthdate: Date | null
-	isMarried: boolean
-	nationality: string
-	password: string
-	confirmationPassword: string
-}
+import z, { type ZodError } from 'zod/v4'
+
+const userRegistrationSchema = z
+	.object({
+		name: z.string().min(1, 'Username is required'),
+		email: z.email('Please enter a valid email'),
+		age: z.number().min(18, 'Ypu must be over the age of 18').nullable(),
+		birthdate: z
+			.date()
+			.max(
+				new Date(
+					`${new Date().getFullYear() - 18}-${new Date().getMonth()}-${new Date().getDate()}`,
+				),
+				'Date suggests that you are younger than 18 years old',
+			)
+			.nullable(),
+		isMarried: z.boolean(),
+		nationality: z.enum(['AUS', 'Canada', 'USA', 'UK']),
+		password: z
+			.string()
+			.min(8, 'Password must be at least 8 characters long'),
+		confirmationPassword: z.string(),
+	})
+	.refine((data) => data.password === data.confirmationPassword, {
+		message: 'Passwords do not match',
+		path: ['confirmationPassword'],
+	})
+
+type UserRegister = z.infer<typeof userRegistrationSchema>
 
 export const Route = createFileRoute('/users/register')({
 	component: RegistrationForm,
 })
 
 const defaultFormValues: UserRegister = {
-	age: undefined,
+	age: null,
 	birthdate: null,
 	confirmationPassword: '',
 	email: '',
-	id: 0,
 	isMarried: false,
 	name: '',
-	nationality: '',
+	nationality: 'AUS',
 	password: '',
 }
 
-function Errors({ errors }: { errors: Array<string | boolean | undefined> }) {
-	return errors.filter(Boolean).map((err) => (
-		<p key={err as string} className="text-red-400">
-			{err}
-		</p>
-	))
+function Errors({ errors }: { errors: Array<any> }) {
+	const zodErrors = errors as Array<ZodError<any>>
+	return zodErrors.filter(Boolean).map((err) => {
+		const errorMessage =
+			typeof err === 'string' ? err : (err.message ?? 'An error occured')
+		return (
+			<p key={errorMessage} className="text-red-400">
+				{errorMessage}
+			</p>
+		)
+	})
 }
 
 function RegistrationForm() {
 	const form = useForm({
 		defaultValues: defaultFormValues,
+		validators: {
+			onChange: userRegistrationSchema,
+		},
 		onSubmit: async ({ value }) => {
 			console.log(value)
 			alert(JSON.stringify(value, null, 3))
@@ -54,12 +81,7 @@ function RegistrationForm() {
 		>
 			<h1>Register</h1>
 
-			<form.Field
-				name="name"
-				validators={{
-					onBlur: ({ value }) => !value.trim() && 'Name is required',
-				}}
-			>
+			<form.Field name="name">
 				{(field) => (
 					<>
 						<label htmlFor="name">Name</label>
@@ -76,17 +98,7 @@ function RegistrationForm() {
 				)}
 			</form.Field>
 
-			<form.Field
-				name="email"
-				validators={{
-					onBlur: ({ value }) => {
-						const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
-						return (
-							!emailRegex.test(value) && 'Invalid email address'
-						)
-					},
-				}}
-			>
+			<form.Field name="email">
 				{(field) => (
 					<>
 						<label htmlFor="email">Email</label>
@@ -103,20 +115,7 @@ function RegistrationForm() {
 				)}
 			</form.Field>
 
-			<form.Field
-				name="age"
-				validators={{
-					onChange: ({ value }) => {
-						if (!value || isNaN(value)) {
-							return 'An age is required'
-						}
-
-						if (value < 18) {
-							return 'You must be over the age of 18'
-						}
-					},
-				}}
-			>
+			<form.Field name="age">
 				{(field) => (
 					<>
 						<label htmlFor="Age">Age</label>
@@ -124,7 +123,7 @@ function RegistrationForm() {
 							type="number"
 							name="age"
 							id="age"
-							value={field.state.value}
+							value={field.state.value ?? ''}
 							onChange={(e) =>
 								field.handleChange(e.target.valueAsNumber)
 							}
@@ -134,23 +133,7 @@ function RegistrationForm() {
 				)}
 			</form.Field>
 
-			<form.Field
-				name="birthdate"
-				validators={{
-					onChange: ({ value }) => {
-						if (!value) {
-							return 'Birth date is required'
-						}
-						const minBirthdate = new Date()
-						minBirthdate.setFullYear(
-							minBirthdate.getFullYear() - 18,
-						)
-						if (value > minBirthdate) {
-							return 'The date you entered suggests you are under 18'
-						}
-					},
-				}}
-			>
+			<form.Field name="birthdate">
 				{(field) => (
 					<>
 						<label htmlFor="birthdate">Birth date</label>
@@ -197,7 +180,11 @@ function RegistrationForm() {
 							name="nationality"
 							id="nationality"
 							value={field.state.value}
-							onChange={(e) => field.handleChange(e.target.value)}
+							onChange={(e) =>
+								field.handleChange(
+									e.target.value as typeof field.state.value,
+								)
+							}
 						>
 							<option value="Aus">Aus</option>
 							<option value="Canada">Canada</option>
