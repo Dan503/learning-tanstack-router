@@ -38,6 +38,9 @@ importers:
       zustand:
         specifier: ^5.0.8
         version: 5.0.8(@types/react@19.1.10)(react@19.1.1)(use-sync-external-store@1.5.0(react@19.1.1))
+      zustand-create-setter-fn:
+        specifier: ^1.0.0
+        version: 1.0.0(zustand@5.0.8(@types/react@19.1.10)(react@19.1.1)(use-sync-external-store@1.5.0(react@19.1.1)))
     devDependencies:
       '@types/node':
         specifier: ^22.5.4
@@ -3392,6 +3395,11 @@ packages:
 
   zod@3.25.76:
     resolution: {integrity: sha512-gzUt/qt81nXsFGKIFcC3YnfEAx5NkunCfnDlvuBSSFS02bcXu4Lmea0AFIUwbLWxWPx3d9p8S5QoaujKcNQxcQ==}
+
+  zustand-create-setter-fn@1.0.0:
+    resolution: {integrity: sha512-RQdhfMHK5l0Dwn2Ha8CNgYcbhmrVKLHfQMtsHmxwsfc37QAirF5KbW5Wl1JLxoJ89RpuBjLl08utJh4CdXM05Q==}
+    peerDependencies:
+      zustand: '>=3.0.2'
 
   zustand@5.0.8:
     resolution: {integrity: sha512-gyPKpIaxY9XcO2vSMrLbiER7QMAMGOQZVRdJ6Zi782jkbzZygq5GI9nG8g+sMgitRtndwaBSl7uiqC49o1SSiw==}
@@ -6957,6 +6965,10 @@ snapshots:
       zod: 3.25.76
 
   zod@3.25.76: {}
+
+  zustand-create-setter-fn@1.0.0(zustand@5.0.8(@types/react@19.1.10)(react@19.1.1)(use-sync-external-store@1.5.0(react@19.1.1))):
+    dependencies:
+      zustand: 5.0.8(@types/react@19.1.10)(react@19.1.1)(use-sync-external-store@1.5.0(react@19.1.1))
 
   zustand@5.0.8(@types/react@19.1.10)(react@19.1.1)(use-sync-external-store@1.5.0(react@19.1.1)):
     optionalDependencies:

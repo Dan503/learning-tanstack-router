@@ -1,51 +1,13 @@
 import { createFileRoute } from '@tanstack/react-router'
 import { memo } from 'react'
 import { create } from 'zustand'
+import { createSetterFn, type SetStateFn } from 'zustand-create-setter-fn'
 
 export const Route = createFileRoute('/zustandTickTacToe')({
 	component: RouteComponent,
 })
 
 type Squares = Array<'x' | 'o' | null>
-
-type SetStateFnParam<T> = T | ((oldState: T) => T)
-type SetStateFn<T> = (newState: SetStateFnParam<T>) => void
-
-function createSetterFn<
-	State extends Record<string, any>,
-	Key extends keyof State,
->(set: SetFn<State>, key: Key) {
-	type Value = State[Key]
-	type Prev = (oldState: Value) => Value
-
-	const setterFn: SetStateFn<State[Key]> = (
-		newState: SetStateFnParam<State[Key]>,
-	) => {
-		set((oldState) => ({
-			...oldState,
-			[key as Key]:
-				typeof newState === 'function'
-					? (newState as Prev)(oldState[key])
-					: newState,
-		}))
-	}
-
-	return setterFn
-}
-
-type SetFn<StateObject extends Record<string, any>> = {
-	(
-		partial:
-			| StateObject
-			| Partial<StateObject>
-			| ((state: StateObject) => StateObject | Partial<StateObject>),
-		replace?: false,
-	): void
-	(
-		state: StateObject | ((state: StateObject) => StateObject),
-		replace: true,
-	): void
-}
 
 interface GameStore {
 	squares: Squares
@@ -56,7 +18,6 @@ interface GameStore {
 
 const useGameStore = create<GameStore>()((set): GameStore => {
 	const setSquares = createSetterFn(set, 'squares')
-	// const setXIsNext = createSetterFn(set, 'xIsNext')
 
 	return {
 		squares: new Array(9).fill(null),

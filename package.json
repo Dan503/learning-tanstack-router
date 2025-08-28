@@ -18,7 +18,8 @@
     "tailwind-merge": "^2.6.0",
     "zod": "^3.25.76",
     "zod-form-data": "^3.0.0",
-    "zustand": "^5.0.8"
+    "zustand": "^5.0.8",
+    "zustand-create-setter-fn": "^1.0.0"
   },
   "devDependencies": {
     "@types/node": "^22.5.4",
